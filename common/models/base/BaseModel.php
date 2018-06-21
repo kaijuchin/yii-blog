@@ -1,0 +1,12 @@
+<?php
+namespace common\models\base;
+use yii\db\ActiveRecord;
+    
+/**
+ * »ù´¡Ä£ÐÍ 
+ */
+ 
+ class BaseModel extends ActiveRecord
+ {
+     
+ }
