@@ -16,9 +16,11 @@ $this->params['breadcrumbs'][] = $this->title;
  			<?php $form = ActiveForm::begin()?>
  				<?=$form->field($model, 'title')->textInput(['maxlength' => true])?>
  				<?=$form->field($model, 'cat_id')->dropDownList($cat)?>
- 				<?=$form->field($model, 'content')->textInput(['maxlength' => true])?>
- 				<?=$form->field($model, 'label_img')->textInput(['maxlength' => true])?>
- 				<?=$form->field($model, 'tags')->textInput(['maxlength' => true])?>
+ 				<?= $form->field($model, 'content')->widget('common\widgets\ueditor\Ueditor',[ 'options'=>[
+					 'initialFrameHeight' => 400
+				 ] ]) ?>
+ 				<?=$form->field($model, 'label_img')->widget('common\widgets\file_upload\FileUpload', [ 'config' => [] ])?>
+ 				<?=$form->field($model, 'tags')->widget('common\widgets\tags\TagWidget')?>
  				
  				<div class="form-group">
  					<?=Html::submitButton("发布", ['class' => 'btn btn-success'])?>

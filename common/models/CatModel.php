@@ -11,7 +11,7 @@ use common\models\base\BaseModel;
  * @property int $id 自增ID
  * @property string $cat_name 分类名称
  */
-class CatsModel extends BaseModel
+class CatModel extends BaseModel
 {
     /**
      * {@inheritdoc}
@@ -41,20 +41,17 @@ class CatsModel extends BaseModel
             'cat_name' => 'Cat Name',
         ];
     }
-    
-    /**
-     * 获取所有分类
-     * @return Array
-     */
+
     public static function getAllCats()
     {
         $cat = ['0' => '暂无分类'];
-        $res = self::find()->asArray()->all();
-        if ($res) {
-            foreach ($res as $k => $v) {
-                $cat[$v['id']] = $v['cat_name'];
+        $resource = self::find()->asArray()->all();
+        if ($resource) {
+            foreach ($resource as $key => $val) {
+                $cat[$val['id']] = $val['cat_name'];
             }
+
+            return $cat;
         }
-        return $cat;
     }
 }
