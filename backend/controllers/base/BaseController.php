@@ -1,7 +1,7 @@
 <?php
 namespace backend\controllers\base;
 
-use yii\base\Controller;
+use yii\web\Controller;
 
 class BaseController extends Controller
 {

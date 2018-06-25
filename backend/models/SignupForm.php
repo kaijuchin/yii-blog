@@ -30,7 +30,7 @@ class SignupForm extends Model
             [['password', 'rePassword'], 'required'],
             [['password', 'rePassword'], 'string', 'min' => 6],
             ['rePassword', 'compare', 'compareAttribute' => 'password', 'message' => 'Two times the password is not consitent.'],
-            ['verifyCode', 'captcha']
+            // ['verifyCode', 'captcha']
         ];
     }
 
@@ -41,7 +41,7 @@ class SignupForm extends Model
             'email' => '邮箱',
             'password' => '密码',
             'rePassword' => '重复密码',
-            'verifyCode' => '验证码',
+            // 'verifyCode' => '验证码',
         ];
     }
 
