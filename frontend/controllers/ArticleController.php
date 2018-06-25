@@ -6,12 +6,44 @@ namespace frontend\controllers;
 
 use Yii;
 use common\models\CatModel;
+use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 use frontend\models\ArticleForm;
 use frontend\controllers\base\BaseController;
 
 
 class ArticleController extends BaseController
 {
+
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index', 'create', 'upload', 'ueditor'],
+                'rules' => [
+                    [
+                        'actions' => ['index'],
+                        'allow' => true,
+                    ],
+                    [
+                        'actions' => ['create', 'upload', 'ueditor'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    '*' => ['get'],
+                    'create' => ['get', 'post'],
+                    'upload' => ['get', 'post'],
+                    'ueditor' => ['get', 'post'],
+                ],
+            ],
+        ];
+    }
 
     public function actions()
     {

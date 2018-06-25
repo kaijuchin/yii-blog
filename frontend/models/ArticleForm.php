@@ -2,8 +2,11 @@
 namespace frontend\models;
 
 use Yii;
+use yii\db\Query;
 use yii\base\Model;
 use app\models\ArticleModel;
+use frontend\models\TagForm;
+use common\models\RelationArticleTagModel;
 
 class ArticleForm extends Model
 {
@@ -18,6 +21,9 @@ class ArticleForm extends Model
      
      const SCENARIOS_CREATE = 'create';
      const SCENARIOS_UPDATE = 'update';
+
+     const EVENT_AFTER_CREATE = 'eventAfterCreate';
+     const EVENT_AFTER_UPDATE = 'eventAfterUpdate';
 
      /**
       * 场景设置
@@ -66,19 +72,21 @@ class ArticleForm extends Model
             $model->summary = $this->_getSummary();
             $model->user_id = Yii::$app->user->identity->id;
             $model->user_name = Yii::$app->user->identity->username;
+            $model->is_valid = ArticleModel::IS_VALID;
             $model->created_at = time();
             $model->updated_at = time();
             if (!$model->save()) {
-                throw new Exception('文章保存失败！');
+                throw new \Exception('文章保存失败！');
             }
             $this->id = $model->id;
 
+            $data = array_merge($this->getAttributes(), $model->getAttributes());
             // 调用事件
-            $this->_eventAfterCreate();
+            $this->_eventAfterCreate($data);
 
             $transaction->commit();
             return true;
-         } catch (Exception $e) {
+         } catch (\Exception $e) {
             $transaction->rollBack();
             $this->$_lastError = $e->getMessage();
             return false;
@@ -98,9 +106,41 @@ class ArticleForm extends Model
      * 文章创建完成后调用的事件
      * 
      */
-    public function _eventAfterCreate()
+    public function _eventAfterCreate($data)
     {
+        // 添加事件
+        $this->on(self::EVENT_AFTER_CREATE, [$this, '_eventAddTag'], $data);
+        // 触发事件
+        $this->trigger(self::EVENT_AFTER_CREATE);
+    }
+    
+    public function _eventAddTag($event)
+    {
+        $tag = new TagForm();
+        $tag->tags = $event->data['tags'];
+        $tagids = $tag->saveTags();
+
+        // 删除原先的关联关系
+        RelationArticleTagModel::deleteAll(['article_id' => $event->data['id']]);
+
+        //批量保存文章和标签的关联关系
+        if (!empty($tagids)) {
+            foreach ($tagids as $k => $id) {
+                $row[$k]['article_id'] = $this->id;
+                $row[$k]['tag_id'] = $id;
+            }
+
+            //批量插入
+            $res = (new Query())->createCommand()
+                ->batchInsert(RelationArticleTagModel::tableName(), ['article_id', 'tag_id'], $row)
+                ->execute();
+
+            if (!$res) {
+                throw new \Exception('关联关系保存失败！');
+            }
+        }
 
     }
-     
+
+    
 }

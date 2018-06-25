@@ -20,7 +20,9 @@ use Yii;
  * @property int $updated_at 更新时间
  */
 class ArticleModel extends \yii\db\ActiveRecord
-{
+{   
+    const IS_VALID = 1; // 发布
+    const NO_VALID = 0; // 未发布
     /**
      * {@inheritdoc}
      */
