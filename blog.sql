@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 100132
 File Encoding         : 65001
 
-Date: 2018-06-22 00:02:35
+Date: 2018-06-25 23:55:20
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -33,12 +33,7 @@ CREATE TABLE `admin` (
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `password_reset_token` (`password_reset_token`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='管理员表';
-
--- ----------------------------
--- Records of admin
--- ----------------------------
-INSERT INTO `admin` VALUES ('2', 'admin', 'FiYV8jRoPj2WI4h1gqf-1wz0dt31sylE', '$2y$13$6J8YpVnpo4GAIPFqA6PTE.8QfOnZqJPBY9BVxqoXtpZjMqDiGWkMi', null, 'admin@gmail.com', '10', '1529508873', '1529508873');
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='管理员表';
 
 -- ----------------------------
 -- Table structure for articles
@@ -58,11 +53,7 @@ CREATE TABLE `articles` (
   `updated_at` int(11) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   KEY `idx_cat_valid` (`cat_id`,`is_valid`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=utf8 COMMENT='文章主表';
-
--- ----------------------------
--- Records of articles
--- ----------------------------
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='文章主表';
 
 -- ----------------------------
 -- Table structure for cats
@@ -72,13 +63,7 @@ CREATE TABLE `cats` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `cat_name` varchar(255) DEFAULT NULL COMMENT '分类名称',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='分类表';
-
--- ----------------------------
--- Records of cats
--- ----------------------------
-INSERT INTO `cats` VALUES ('1', 'class 1');
-INSERT INTO `cats` VALUES ('2', 'class 2');
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='分类表';
 
 -- ----------------------------
 -- Table structure for migration
@@ -91,12 +76,6 @@ CREATE TABLE `migration` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of migration
--- ----------------------------
-INSERT INTO `migration` VALUES ('m000000_000000_base', '1529497451');
-INSERT INTO `migration` VALUES ('m130524_201442_init', '1529497453');
-
--- ----------------------------
 -- Table structure for relation_article_tags
 -- ----------------------------
 DROP TABLE IF EXISTS `relation_article_tags`;
@@ -106,11 +85,7 @@ CREATE TABLE `relation_article_tags` (
   `tag_id` int(11) DEFAULT NULL COMMENT '标签ID',
   PRIMARY KEY (`id`),
   UNIQUE KEY `article_id` (`article_id`,`tag_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8 COMMENT='文章和标签关系表';
-
--- ----------------------------
--- Records of relation_article_tags
--- ----------------------------
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='文章和标签关系表';
 
 -- ----------------------------
 -- Table structure for tags
@@ -122,11 +97,7 @@ CREATE TABLE `tags` (
   `article_num` int(11) DEFAULT '0' COMMENT '关联文章数',
   PRIMARY KEY (`id`),
   UNIQUE KEY `tag_name` (`tag_name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8 COMMENT='标签表';
-
--- ----------------------------
--- Records of tags
--- ----------------------------
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='标签表';
 
 -- ----------------------------
 -- Table structure for user
@@ -147,10 +118,3 @@ CREATE TABLE `user` (
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `password_reset_token` (`password_reset_token`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户表';
-
--- ----------------------------
--- Records of user
--- ----------------------------
-INSERT INTO `user` VALUES ('1', 'kaijuchin', 'Yj8-sNrxCuIyCENlL9nypG-SkmPfQjtR', '$2y$13$k650/BTJeK/aYYcIPvWIOuPDKkXIqKSz9Mhpoma3Aq0Fkp/RS0HLW', null, 'kaijuchin@gmail.com', '10', '1529497488', '1529497488');
-INSERT INTO `user` VALUES ('2', 'test', 'koUtTau3HBPE_rH0h8IptQHae-rrEEA9', '$2y$13$mvXiXfl14Iodr2cokzCsF.kxgjFdHqu6B7ZqKp8mWMHkg5pjdA1ya', null, 'test@test.com', '10', '1529503340', '1529503340');
-INSERT INTO `user` VALUES ('3', 'test001', '7S-CQrsa6tdDcbHES2TcswMmm9Khb8LZ', '$2y$13$OlI1td9P/HDXfVLxZ02pGuriXVMEKfP/5agaAaLyO9gM8SZIvzziu', null, 'test001@test.com', '10', '1529503364', '1529503364');
